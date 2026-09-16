@@ -2,7 +2,6 @@ import type { Request, Response, NextFunction } from "express";
 import { faker } from "@faker-js/faker";
 import Product from "../models/product";
 import BadRequestError from "../errors/bad-request-error";
-import NotFoundError from "../errors/not-found-error";
 
 const createOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -15,7 +14,7 @@ const createOrder = async (req: Request, res: Response, next: NextFunction) => {
 
     if (products.some((p) => !p)) {
       return next(
-        new NotFoundError("Не найдены один или несколько товаров из заказа"),
+        new BadRequestError("Не найдены один или несколько товаров из заказа"),
       );
     }
 
@@ -38,7 +37,7 @@ const createOrder = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     const id = faker.string.uuid();
-    return res.status(201).json({ id, total });
+    return res.status(200).json({ id, total });
   } catch (err) {
     return next(err);
   }

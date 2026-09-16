@@ -4,7 +4,7 @@ import BadRequestError from "../errors/bad-request-error";
 import ConflictError from "../errors/conflict-error";
 import NotFoundError from "../errors/not-found-error";
 
-export const errorHandler = (
+const errorHandler = (
   err: any,
   _req: Request,
   res: Response,
@@ -13,7 +13,7 @@ export const errorHandler = (
   if (isCelebrateError(err)) {
     return res
       .status(400)
-      .json({ message: err.message || "Ошибка валидации данных" });
+      .json({ message: "Ошибка валидации данных при создании товара" });
   }
 
   if (
@@ -39,9 +39,10 @@ export const errorHandler = (
     });
   }
 
-  console.error(err);
   const statusCode = err.statusCode || 500;
   const message = err.message || "Ошибка на сервере";
 
   return res.status(statusCode).json({ message });
 };
+
+export default errorHandler;
