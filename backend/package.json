@@ -33,9 +33,7 @@
     "dotenv": "^17.4.2",
     "express": "^4.19.2",
     "express-winston": "^4.2.0",
-    "mongodb": "^7.6.0",
     "mongoose": "^8.24.4",
-    "validator": "^13.11.0",
     "winston": "^3.19.0"
   }
 }

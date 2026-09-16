@@ -1,7 +1,7 @@
-import type { Request, Response, NextFunction } from "express";
-import { faker } from "@faker-js/faker";
-import Product from "../models/product";
-import BadRequestError from "../errors/bad-request-error";
+import type { Request, Response, NextFunction } from 'express';
+import { faker } from '@faker-js/faker';
+import Product from '../models/product';
+import BadRequestError from '../errors/bad-request-error';
 
 const createOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -14,14 +14,14 @@ const createOrder = async (req: Request, res: Response, next: NextFunction) => {
 
     if (products.some((p) => !p)) {
       return next(
-        new BadRequestError("Не найдены один или несколько товаров из заказа"),
+        new BadRequestError('Не найдены один или несколько товаров из заказа'),
       );
     }
 
     if (products.some((p) => p!.price == null)) {
       return next(
         new BadRequestError(
-          "Есть товар, недоступный для продажи (отсутствует цена)",
+          'Есть товар, недоступный для продажи (отсутствует цена)',
         ),
       );
     }

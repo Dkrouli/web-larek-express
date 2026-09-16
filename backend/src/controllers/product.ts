@@ -1,8 +1,8 @@
-import type { Request, Response, NextFunction } from 'express';
-import Product from '../models/product';
-import NotFoundError from '../errors/not-found-error';
-import BadRequestError from '../errors/bad-request-error';
-import ConflictError from '../errors/conflict-error';
+import type { Request, Response, NextFunction } from "express";
+import Product from "../models/product";
+import NotFoundError from "../errors/not-found-error";
+import BadRequestError from "../errors/bad-request-error";
+import ConflictError from "../errors/conflict-error";
 
 export const getProducts = async (
   _req: Request,
@@ -12,7 +12,7 @@ export const getProducts = async (
   try {
     const products = await Product.find();
     if (products.length === 0) {
-      return next(new NotFoundError('Товары не найдены'));
+      return next(new NotFoundError("Товары не найдены"));
     }
     return res.status(200).json({ items: products, total: products.length });
   } catch (err) {
@@ -28,11 +28,11 @@ export const getProduct = async (
   try {
     const { id } = req.params;
     if (!id) {
-      return next(new BadRequestError('ID товара не указан'));
+      return next(new BadRequestError("ID товара не указан"));
     }
     const product = await Product.findById(id);
     if (!product) {
-      return next(new NotFoundError('Товар не найден'));
+      return next(new NotFoundError("Товар не найден"));
     }
     return res.status(200).json(product);
   } catch (err) {
@@ -46,9 +46,7 @@ export const createProduct = async (
   next: NextFunction,
 ) => {
   try {
-    const {
-      description, image, title, category, price,
-    } = req.body;
+    const { description, image, title, category, price } = req.body;
 
     const product = await Product.create({
       description,
@@ -61,17 +59,17 @@ export const createProduct = async (
     return res.status(201).json(product);
   } catch (err) {
     if (!(err instanceof Error)) {
-      return next(new Error('Неизвестная ошибка сервера'));
+      return next(new Error("Неизвестная ошибка сервера"));
     }
 
-    if (err.name === 'ValidationError') {
+    if (err.name === "ValidationError") {
       return next(
-        new BadRequestError('Ошибка валидации данных при создании товара'),
+        new BadRequestError("Ошибка валидации данных при создании товара"),
       );
     }
 
-    if (err.message.includes('E11000')) {
-      return next(new ConflictError('Товар с таким названием уже существует'));
+    if (err.message.includes("E11000")) {
+      return next(new ConflictError("Товар с таким названием уже существует"));
     }
 
     return next(err);

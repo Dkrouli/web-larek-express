@@ -21,8 +21,8 @@ app.use((_req, _res, next) => {
   next(new NotFoundError('Маршрут не найден'));
 });
 
-app.use(errorHandler);
 app.use(errorLogger);
+app.use(errorHandler);
 
 app.get('/', (_req, res) => {
   res.json({ message: 'Сервер работает!' });
@@ -34,6 +34,7 @@ mongoose
   .connect(mongoAddress)
   .then(() => {
     app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
     });
   })
   .catch((err) => {
