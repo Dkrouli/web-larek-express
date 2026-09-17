@@ -28,12 +28,12 @@ app.get('/', (_req, res) => {
   res.json({ message: 'Сервер работает!' });
 });
 
-const mongoAddress = process.env.DB_ADDRESS || 'mongodb://127.0.0.1:27017/weblarek';
+const mongoAddress = process.env.DB_ADDRESS || 'mongodb://localhost:27017/weblarek';
 
 mongoose
   .connect(mongoAddress)
   .then(() => {
-    app.listen(PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {
       console.log(`Server is running on port ${PORT}`);
     });
   })
