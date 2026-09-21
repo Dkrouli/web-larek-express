@@ -1,5 +1,3 @@
-console.log(">>> STARTING BACKEND...");
-console.log(">>> DB_ADDRESS:", process.env.DB_ADDRESS);
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
@@ -36,11 +34,15 @@ const mongoAddress =
 mongoose
   .connect(mongoAddress)
   .then(() => {
-    app.listen(PORT, "0.0.0.0", () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
+    console.log("MongoDB connected successfully");
   })
   .catch((err) => {
-    console.error("Database connection error:", err.message);
-    process.exit(1);
+    console.error(
+      "MongoDB connection error (server will still start):",
+      err.message,
+    );
   });
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server is running on port ${PORT}`);
+});
