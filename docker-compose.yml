@@ -34,7 +34,7 @@ services:
     networks:
       - internal
     depends_on:
-      - mongo:
+      - mongo
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/"]
       interval: 5s
