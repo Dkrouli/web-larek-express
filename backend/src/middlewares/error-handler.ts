@@ -1,9 +1,9 @@
-import { isCelebrateError } from "celebrate";
-import { NextFunction, Request, Response } from "express";
-import BadRequestError from "../errors/bad-request-error";
-import ConflictError from "../errors/conflict-error";
-import NotFoundError from "../errors/not-found-error";
-import UnauthorizedError from "../errors/unauthorized-error";
+import { isCelebrateError } from 'celebrate';
+import { NextFunction, Request, Response } from 'express';
+import BadRequestError from '../errors/bad-request-error';
+import ConflictError from '../errors/conflict-error';
+import NotFoundError from '../errors/not-found-error';
+import UnauthorizedError from '../errors/unauthorized-error';
 
 const errorHandler = (
   err: any,
@@ -13,13 +13,13 @@ const errorHandler = (
 ) => {
   if (err instanceof SyntaxError) {
     return res.status(400).json({
-      message: "Ошибка валидации данных при оформлении заказа",
+      message: 'Ошибка валидации данных при оформлении заказа',
     });
   }
 
   if (isCelebrateError(err)) {
     return res.status(400).json({
-      message: "Ошибка валидации данных при создании товара",
+      message: 'Ошибка валидации данных при создании товара',
     });
   }
 
@@ -30,26 +30,26 @@ const errorHandler = (
   }
 
   if (
-    err instanceof BadRequestError ||
-    err instanceof NotFoundError ||
-    err instanceof UnauthorizedError
+    err instanceof BadRequestError
+    || err instanceof NotFoundError
+    || err instanceof UnauthorizedError
   ) {
     return res.status(err.statusCode).json({ message: err.message });
   }
 
   if (
-    err.message &&
-    typeof err.message === "string" &&
-    err.message.includes("E11000")
+    err.message
+    && typeof err.message === 'string'
+    && err.message.includes('E11000')
   ) {
     return res.status(409).json({
-      message: "Товар с таким названием уже существует",
+      message: 'Товар с таким названием уже существует',
     });
   }
 
-  console.error("Unhandled error:", err);
+  console.error('Unhandled error:', err);
   return res.status(500).json({
-    message: "Ошибка на сервере",
+    message: 'Ошибка на сервере',
   });
 };
 
