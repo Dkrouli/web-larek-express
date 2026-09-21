@@ -1,62 +1,22 @@
-services:
-  frontend:
-    build:
-      context: frontend
-    env_file:
-      - frontend/.env
-    volumes:
-      - frontend:/app/frontend/dist
-
-  mongo:
-    image: mongo
-    restart: always
-    environment:
-      - DB_ADDRESS=mongodb://root:example@mongo:27017/weblarek
-      - PORT=3000
-    volumes:
-      - db:/data/db
-    networks:
-      - internal
-
   backend:
     restart: always
     build:
       context: backend
     env_file:
       - backend/.env
+    environment:
+      - DB_ADDRESS=mongodb://root:example@mongo:27017/weblarek
     volumes:
       - ./backend/src:/app/src
       - public:/app/src/public
-
     networks:
       - internal
     depends_on:
       - mongo
-    condition: service_healthy
-    test: ["CMD", "curl", "-f", "http://localhost:3000/"]
-      interval: 5s  
+      condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 5s
       timeout: 5s
       retries: 5
-      start_period: 40s  
-
-  server:
-    build:
-      context: nginx
-    ports:
-      - 80:80
-    volumes:
-      - frontend:/var/app
-      - public:/var/public
-    depends_on:
-      - frontend
-      - backend
-    networks:
-      - internal
-
-volumes:
-  frontend:
-  public:
-  db:
-
-networks:
-  internal:
+      start_period: 40s
