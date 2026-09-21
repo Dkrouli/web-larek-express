@@ -11,8 +11,8 @@ services:
     image: mongo
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      - DB_ADDRESS=mongodb://root:example@mongo:27017/weblarek
+      - PORT=3000
     volumes:
       - db:/data/db
     networks:
@@ -32,6 +32,12 @@ services:
       - internal
     depends_on:
       - mongo
+    condition: service_healthy
+    test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 5s  
+      timeout: 5s
+      retries: 5
+      start_period: 40s  
 
   server:
     build:
